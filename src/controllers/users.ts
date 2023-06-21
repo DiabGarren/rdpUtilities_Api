@@ -29,21 +29,21 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         if (!objectId.isValid(req.params.id)) {
-            res.status(400).json('A valid user id is required');
+            res.status(400).send({ error: 'A valid user id is required' });
         }
         const id = new objectId(req.params.id);
         const result = await db.getDb().db().collection('users').find({ _id: id });
         result.toArray()
             .then((list) => {
                 if (list.length == 0) {
-                    res.status(400).send({ message: `Cannot find user with id: ${id}` });
+                    res.status(400).send({ error: `Cannot find user with id: ${id}` });
                 } else {
                     res.setHeader('Content-Type', 'application/json');
                     res.status(200).json(list[0]);
                 }
             })
             .catch((err) => {
-                res.status(500).send({ message: `Error finding user with id: ${id}`, error: err });
+                res.status(500).send({ error: `Error finding user with id: ${id}, Err: ${err}` });
             });
     } catch (err) {
         res.status(500).json(err);
@@ -58,15 +58,43 @@ const createUser = async (req, res) => {
             firstName: firstName,
             lastName: lastName,
             username: req.body.username,
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
             password: await hashPassword(req.body.password),
-            image: req.body.image
+            level: req.body.level
         };
         const response = await db.getDb().db().collection('users').insertOne(user);
         if (response.acknowledged && user.password != null) {
             res.status(201).json(response);
         } else {
-            res.status(500).json('An error occured while creating the user.');
+            res.status(500).send({ error: 'An error occured while creating the user.' });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+const updateUser = async (req, res) => {
+    try {
+        if (!objectId.isValid(req.params.id)) {
+            res.status(400).send({ error: 'A valid user id is required' });
+        }
+        const id = new objectId(req.params.id);
+
+        const firstName = req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.substr(1).toLowerCase();
+        const lastName = req.body.lastName.charAt(0).toUpperCase() + req.body.lastName.substr(1).toLowerCase();
+        const user = {
+            firstName: firstName,
+            lastName: lastName,
+            username: req.body.username,
+            email: req.body.email.toLowerCase(),
+            password: await hashPassword(req.body.password),
+            level: req.body.level
+        };
+        const response = await db.getDb().db().collection('users').replaceOne({ _id: id }, user);
+        if (response.acknowledged && user.password != null) {
+            res.status(204).json(response);
+        } else {
+            res.status(500).send({ error: 'An error occured while creating the user.' });
         }
     } catch (err) {
         res.status(500).json(err);
@@ -75,14 +103,8 @@ const createUser = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        // const user = {
-        //     username: req.body.username,
-        //     email: req.body.email,
-        //     password: req.body.password,
-        // };
-
         if (req.body.username == '' && req.body.email == '') {
-            res.status(400).json({ message: 'Please enter a username or email.' });
+            res.status(400).json({ error: 'Please enter a username or email.' });
             return;
         }
 
@@ -93,20 +115,20 @@ const login = async (req, res) => {
         } else {
             result = await db.getDb().db().collection('users').find({ username: req.body.username });
         }
-        
+
         const user = await result.toArray();
 
         if (user.length == 0) {
-            res.status(400).json({ message: 'Cannot find user with that username or email.' });
+            res.status(400).json({ error: 'Cannot find user with that username or email.' });
             return;
         }
 
         const samePass = await comparePassword(req.body.password, user[0].password);
 
         if (samePass) {
-            res.status(200).json({ message: `Welcome ${user[0].firstName} ${user[0].lastName}` });
+            res.status(200).json({ message: `Welcome ${user[0].firstName} ${user[0].lastName}`, id: user[0]._id });
         } else {
-            res.status(400).json({ message: 'Password incorrect.' });
+            res.status(400).json({ error: 'Password incorrect.' });
         }
     } catch (err) {
         res.status(500).json(err);
@@ -117,5 +139,6 @@ export default {
     getUsers,
     getUser,
     createUser,
-    login
+    updateUser,
+    login,
 };

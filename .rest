@@ -1,10 +1,10 @@
-GET http://localhost:1820/users HTTP/1.1
+GET http://localhost:1830/users HTTP/1.1
 
 ###
-GET http://localhost:1820/users/649354a327d6b5439d27a648 HTTP/1.1
+GET http://localhost:1830/users/649354a327d6b5439d27a648 HTTP/1.1
 
 ###
-POST http://localhost:1820/users HTTP/1.1
+POST http://localhost:1830/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -13,11 +13,24 @@ Content-Type: application/json
     "username": "diabgm",
     "email": "garrendiab@gmail.com",
     "password": "Diabfam4",
-    "image": ""
+    "level": "3"
 }
 
 ###
-POST http://localhost:1820/users/login HTTP/1.1
+PUT http://localhost:1830/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "Garren",
+    "lastName": "Diab",
+    "username": "diabgm",
+    "email": "garrendiab@gmail.com",
+    "password": "Diabfam4",
+    "level": "3"
+}
+
+###
+POST http://localhost:1830/users/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -27,7 +40,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:1820/users/login HTTP/1.1
+POST http://localhost:1830/users/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -37,7 +50,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:1820/users/login HTTP/1.1
+POST http://localhost:1830/users/login HTTP/1.1
 Content-Type: application/json
 
 {
