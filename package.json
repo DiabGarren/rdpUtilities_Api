@@ -1,0 +1,44 @@
+{
+  "name": "rdputils_api",
+  "version": "1.0.0",
+  "description": "Api access to database for managing Roodepoort Ward info",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "build": "npx tsc",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "swagger": "node src/swagger.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiabGarren/rdpUtils_API.git"
+  },
+  "author": "Garren Diab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiabGarren/rdpUtils_API/issues"
+  },
+  "homepage": "https://github.com/DiabGarren/rdpUtils_API#readme",
+  "dependencies": {
+    "@types/express": "^4.17.17",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^5.6.0",
+    "swagger-ui-express": "^4.6.3",
+    "validatorjs": "^3.22.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.43.0",
+    "nodemon": "^2.0.22",
+    "swagger-autogen": "^2.23.2",
+    "typescript": "^5.1.3"
+  }
+}
