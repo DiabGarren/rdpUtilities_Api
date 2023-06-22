@@ -84,9 +84,24 @@ const updateDoc = async (req, res) => {
     }
 };
 
+const deleteDoc = async (req, res) => {
+    try {
+        const date = req.params.date;
+        const response = await db.getDb().db().collection('wardCouncil').deleteOne({ date: date });
+        if (response.acknowledged) {
+            res.status(204).json(response);
+        } else {
+            res.status(500).send({ error: 'An error occured while deleting the doc.' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: `Error deleting doc, Err: ${err}` });
+    }
+};
+
 export = {
     getAllDocs,
     getDoc,
     createDoc,
-    updateDoc
+    updateDoc,
+    deleteDoc
 }

@@ -115,6 +115,23 @@ const updateUser = async (req, res) => {
     }
 };
 
+const deleteUser = async (req, res) => {
+    try {
+        if (!objectId.isValid(req.params.id)) {
+            res.status(400).send({ error: 'A valid user id is required' });
+        }
+        const id = new objectId(req.params.id);
+        const response = await db.getDb().db().collection('users').deleteOne({ _id: id });
+        if (response.acknowledged) {
+            res.status(204).json(response);
+        } else {
+            res.status(500).send({ error: 'An error occured while deleting the user.' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: `Error deleting user, Err: ${err}` });
+    }
+};
+
 const login = async (req, res) => {
     try {
         if (req.body.username == '' && req.body.email == '') {
@@ -154,5 +171,6 @@ export = {
     getUser,
     createUser,
     updateUser,
+    deleteUser,
     login,
 }

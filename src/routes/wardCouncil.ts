@@ -9,4 +9,6 @@ router.get('/:date', wardCouncil.getDoc);
 router.post('/', wardCouncil.createDoc);
 router.put('/:date', wardCouncil.updateDoc);
 
+router.delete('/:date', wardCouncil.deleteDoc);
+
 export = router;
