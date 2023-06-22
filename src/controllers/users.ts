@@ -17,12 +17,13 @@ const comparePassword = async (password: string, hash: string) => {
 const getUsers = async (req, res) => {
     try {
         const result = await db.getDb().db().collection('users').find();
-        result.toArray().then((list) => {
-            res.setHeader('Content-Type', 'application/json');
-            res.status(200).json(list);
-        });
+        result.toArray()
+            .then((list) => {
+                res.setHeader('Content-Type', 'application/json');
+                res.status(200).json(list);
+            });
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ error: `Error getting users, Err: ${err}` });
     }
 };
 
@@ -46,7 +47,7 @@ const getUser = async (req, res) => {
                 res.status(500).send({ error: `Error finding user with id: ${id}, Err: ${err}` });
             });
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ error: `Error getting the user, Err: ${err}` });
     }
 };
 
@@ -57,19 +58,32 @@ const createUser = async (req, res) => {
         const user = {
             firstName: firstName,
             lastName: lastName,
-            username: req.body.username,
+            username: req.body.username.toLowerCase(),
             email: req.body.email.toLowerCase(),
             password: await hashPassword(req.body.password),
             level: req.body.level
         };
-        const response = await db.getDb().db().collection('users').insertOne(user);
-        if (response.acknowledged && user.password != null) {
-            res.status(201).json(response);
-        } else {
-            res.status(500).send({ error: 'An error occured while creating the user.' });
+        const result = await db.getDb().db().collection('users').find();
+        let existing = false;
+        const users = await result.toArray();
+        users.forEach(exUser => {
+            if (exUser.username == user.username || exUser.email == user.email) {
+                res.status(400).send({ error: 'This username or email is already in use.' });
+                existing = true;
+            }
+        });
+
+        if (!existing) {
+            const response = await db.getDb().db().collection('users').insertOne(user);
+            if (response.acknowledged && user.password != null) {
+                res.status(201).json(response);
+            } else {
+                res.status(500).send({ error: 'An error occured while creating the user.' });
+            }
         }
+
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ error: `Error creating the user, Err: ${err}` });
     }
 };
 
@@ -85,7 +99,7 @@ const updateUser = async (req, res) => {
         const user = {
             firstName: firstName,
             lastName: lastName,
-            username: req.body.username,
+            username: req.body.username.toLowerCase(),
             email: req.body.email.toLowerCase(),
             password: await hashPassword(req.body.password),
             level: req.body.level
@@ -94,10 +108,10 @@ const updateUser = async (req, res) => {
         if (response.acknowledged && user.password != null) {
             res.status(204).json(response);
         } else {
-            res.status(500).send({ error: 'An error occured while creating the user.' });
+            res.status(500).send({ error: 'An error occured while updating the user.' });
         }
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ error: `Error updating user, Err: ${err}` });
     }
 };
 
@@ -131,14 +145,14 @@ const login = async (req, res) => {
             res.status(400).json({ error: 'Password incorrect.' });
         }
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ error: `Error logging in, Err: ${err}` });
     }
 };
 
-export default {
+export = {
     getUsers,
     getUser,
     createUser,
     updateUser,
     login,
-};
+}

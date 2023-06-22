@@ -1,1 +1,0 @@
-document.location = 'http://localhost:1830';
