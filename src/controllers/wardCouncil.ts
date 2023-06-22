@@ -35,7 +35,11 @@ const createDoc = async (req, res) => {
     try {
         const wc = {
             date: req.body.date,
+            openingPrayer: req.body.openingPrayer,
+            spiritualThought: req.body.spiritualThought,
+            training: req.body.training,
             agenda: req.body.agenda,
+            closingPrayer: req.body.closingPrayer,
             notes: req.body.notes
         };
         const response = await db.getDb().db().collection('wardCouncil').insertOne(wc);
@@ -54,21 +58,43 @@ const updateDoc = async (req, res) => {
         const date = req.params.date;
         const result = await db.getDb().db().collection('wardCouncil').find({ date: date });
         const existingDoc = await result.toArray();
-        
+
         if (existingDoc.length > 0) {
-            let agenda = req.body.agenda, notes = req.body.notes;
+            let openingPrayer = req.body.openingPrayer, spiritualThought = req.body.spiritualThought, training = req.body.training, agenda = req.body.agenda, closingPrayer = req.body.closingPrayer, notes = req.body.notes;
+
+            if (!openingPrayer) {
+                openingPrayer = existingDoc[0].openingPrayer;
+            }
+            
+            if (!spiritualThought) {
+                spiritualThought = existingDoc[0].spiritualThought;
+            }
+
+            if (!training) {
+                training = existingDoc[0].training;
+            }
 
             if (!agenda) {
                 agenda = existingDoc[0].agenda;
             }
+
+            if (!closingPrayer) {
+                closingPrayer = existingDoc[0].closingPrayer;
+            }
+
             if (!notes) {
                 notes = existingDoc[0].notes;
             }
 
             const doc = {
-                date: date,
-                agenda: agenda,
+                date: date, 
+                openingPrayer: openingPrayer, 
+                spiritualThought: spiritualThought, 
+                training: training, 
+                agenda: agenda, 
+                closingPrayer: closingPrayer, 
                 notes: notes
+    
             };
             const response = await db.getDb().db().collection('wardCouncil').replaceOne({ date: date }, doc);
             if (response.acknowledged) {
