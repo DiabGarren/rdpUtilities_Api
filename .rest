@@ -85,3 +85,38 @@ Content-Type: application/json
                     "items": ["", ""]
                 }]
 }
+
+###
+GET http://localhost:1830/sacrament HTTP/1.1
+
+###
+GET http://localhost:1830/sacrament/2023-06-25 HTTP/1.1
+
+###
+POST http://localhost:1830/sacrament HTTP/1.1
+Content-Type: application/json
+
+{
+    "date": "2023-06-25",
+    "conducting": "Brother Mendu",
+    "announcements": [
+        "Soup evening in July, more details to follow"
+    ],
+    "openingPrayer": "",
+    "openingHymn": "280 Welcome Welcome Sabbath Morning",
+    "sacramentHymn": "185 Reverently and Meekly Now",
+    "intermediateHymn": "Ward Choir",
+    "closingHymn": "260 Who's on the Lords side?",
+    "releases": [
+        "Sister Tebogo Makhaye as the Relief Society Secretary"
+        ],
+    "sustainings": [
+        "Siter Leanne Turner as Relief Society Secretary",
+        "Sister Yolanda Classen as Assistant Relief Society Secretary"
+    ],
+    "other": "",
+    "firstSpeaker": "Bishop Vorster",
+    "secondSpeaker": "Sister Philadelphia Mogapi",
+    "finalSpeaker": "Stake Speaker",
+    "closingPrayer": ""
+}
