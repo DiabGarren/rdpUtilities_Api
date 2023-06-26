@@ -33,7 +33,7 @@ const getDoc = async (req, res) => {
 
 const createDoc = async (req, res) => {
     try {
-        const wc = {
+        const doc = {
             date: req.body.date,
             openingPrayer: req.body.openingPrayer,
             spiritualThought: req.body.spiritualThought,
@@ -42,7 +42,7 @@ const createDoc = async (req, res) => {
             closingPrayer: req.body.closingPrayer,
             notes: req.body.notes
         };
-        const response = await db.getDb().db().collection('wardCouncil').insertOne(wc);
+        const response = await db.getDb().db().collection('wardCouncil').insertOne(doc);
         if (response.acknowledged) {
             res.status(200).json(response);
         } else {
