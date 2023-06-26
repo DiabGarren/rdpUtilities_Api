@@ -100,7 +100,7 @@ const updateDoc = async (req, res) => {
             if (response.acknowledged) {
                 res.status(200).json(response);
             } else {
-                res.status(500).send({ error: 'An error occured while updating the doc.' });
+                res.status(500).json({ error: 'An error occured while updating the doc.' });
             }
         } else {
             res.status(400).json({ error: `Cannot find doc with date: ${date}` });
@@ -115,9 +115,9 @@ const deleteDoc = async (req, res) => {
         const date = req.params.date;
         const response = await db.getDb().db().collection('wardCouncil').deleteOne({ date: date });
         if (response.acknowledged) {
-            res.status(204).send();
+            res.status(204).json(response);
         } else {
-            res.status(500).send({ error: 'An error occured while deleting the doc.' });
+            res.status(500).json({ error: 'An error occured while deleting the doc.' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error deleting doc, Err: ${err}` });

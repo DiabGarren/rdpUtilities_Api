@@ -30,21 +30,21 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         if (!objectId.isValid(req.params.id)) {
-            res.status(400).send({ error: 'A valid user id is required' });
+            res.status(400).json({ error: 'A valid user id is required' });
         }
         const id = new objectId(req.params.id);
         const result = await db.getDb().db().collection('users').find({ _id: id });
         result.toArray()
             .then((list) => {
                 if (list.length == 0) {
-                    res.status(400).send({ error: `Cannot find user with id: ${id}` });
+                    res.status(400).json({ error: `Cannot find user with id: ${id}` });
                 } else {
                     res.setHeader('Content-Type', 'application/json');
                     res.status(200).json(list[0]);
                 }
             })
             .catch((err) => {
-                res.status(500).send({ error: `Error finding user with id: ${id}, Err: ${err}` });
+                res.status(500).json({ error: `Error finding user with id: ${id}, Err: ${err}` });
             });
     } catch (err) {
         res.status(500).json({ error: `Error getting the user, Err: ${err}` });
@@ -68,7 +68,7 @@ const createUser = async (req, res) => {
         const users = await result.toArray();
         users.forEach(exUser => {
             if (exUser.username == user.username || exUser.email == user.email) {
-                res.status(400).send({ error: 'This username or email is already in use.' });
+                res.status(400).json({ error: 'This username or email is already in use.' });
                 existing = true;
             }
         });
@@ -78,7 +78,7 @@ const createUser = async (req, res) => {
             if (response.acknowledged && user.password != null) {
                 res.status(201).json(response);
             } else {
-                res.status(500).send({ error: 'An error occured while creating the user.' });
+                res.status(500).json({ error: 'An error occured while creating the user.' });
             }
         }
 
@@ -90,7 +90,7 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         if (!objectId.isValid(req.params.id)) {
-            res.status(400).send({ error: 'A valid user id is required' });
+            res.status(400).json({ error: 'A valid user id is required' });
         }
         const id = new objectId(req.params.id);
 
@@ -108,7 +108,7 @@ const updateUser = async (req, res) => {
         if (response.acknowledged && user.password != null) {
             res.status(204).json(response);
         } else {
-            res.status(500).send({ error: 'An error occured while updating the user.' });
+            res.status(500).json({ error: 'An error occured while updating the user.' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error updating user, Err: ${err}` });
@@ -118,14 +118,14 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         if (!objectId.isValid(req.params.id)) {
-            res.status(400).send({ error: 'A valid user id is required' });
+            res.status(400).json({ error: 'A valid user id is required' });
         }
         const id = new objectId(req.params.id);
         const response = await db.getDb().db().collection('users').deleteOne({ _id: id });
         if (response.acknowledged) {
             res.status(204).json(response);
         } else {
-            res.status(500).send({ error: 'An error occured while deleting the user.' });
+            res.status(500).json({ error: 'An error occured while deleting the user.' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error deleting user, Err: ${err}` });
