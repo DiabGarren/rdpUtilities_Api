@@ -41,7 +41,6 @@ const createDoc = async (req, res) => {
             hymns: {
                 openingHymn: req.body.openingHymn,
                 sacramentHymn: req.body.sacramentHymn,
-                intermediateHymn: req.body.intermediateHymn,
                 closingHymn: req.body.closingHymn
             },
             wardBusiness: {
@@ -49,11 +48,7 @@ const createDoc = async (req, res) => {
                 sustainings: req.body.sustainings,
                 other: req.body.other
             },
-            program: {
-                firstSpeaker: req.body.firstSpeaker,
-                secondSpeaker: req.body.secondSpeaker,
-                finalSpeaker: req.body.finalSpeaker
-            },
+            program: req.body.program,
             closingPrayer: req.body.closingPrayer
         };
         const response = await db.getDb().db().collection('sacrament').insertOne(doc);
@@ -80,14 +75,11 @@ const updateDoc = async (req, res) => {
                 openingPrayer = req.body.openingPrayer,
                 openingHymn = req.body.openingHymn,
                 sacramentHymn = req.body.sacramentHymn,
-                intermediateHymn = req.body.intermediateHymn,
                 closingHymn = req.body.closingHymn,
                 releases = req.body.releases,
                 sustainings = req.body.sustainings,
                 other = req.body.other,
-                firstSpeaker = req.body.firstSpeaker,
-                secondSpeaker = req.body.secondSpeaker,
-                finalSpeaker = req.body.finalSpeaker,
+                program = req.body.program,
                 closingPrayer = req.body.closingPrayer;
 
             if (!conducting) {
@@ -110,10 +102,6 @@ const updateDoc = async (req, res) => {
                 sacramentHymn = existingDoc[0].sacramentHymn;
             }
 
-            if (!intermediateHymn) {
-                intermediateHymn = existingDoc[0].intermediateHymn;
-            }
-
             if (!closingHymn) {
                 closingHymn = existingDoc[0].closingHymn;
             }
@@ -130,16 +118,8 @@ const updateDoc = async (req, res) => {
                 other = existingDoc[0].other;
             }
 
-            if (!firstSpeaker) {
-                firstSpeaker = existingDoc[0].firstSpeaker;
-            }
-
-            if (!secondSpeaker) {
-                secondSpeaker = existingDoc[0].secondSpeaker;
-            }
-
-            if (!finalSpeaker) {
-                finalSpeaker = existingDoc[0].finalSpeaker;
+            if (!program) {
+                program = existingDoc[0].program;
             }
             
             if (!closingPrayer) {
@@ -147,27 +127,22 @@ const updateDoc = async (req, res) => {
             }
 
             const doc = {
-                date: req.body.date,
-                conducting: req.body.conducting,
-                announcements: req.body.announcements,
-                openingPrayer: req.body.openingPrayer,
+                date: date,
+                conducting: conducting,
+                announcements: announcements,
+                openingPrayer: openingPrayer,
                 hymns: {
-                    openingHymn: req.body.openingHymn,
-                    sacramentHymn: req.body.sacramentHymn,
-                    intermediateHymn: req.body.intermediateHymn,
-                    closingHymn: req.body.closingHymn
+                    openingHymn: openingHymn,
+                    sacramentHymn: sacramentHymn,
+                    closingHymn: closingHymn
                 },
                 wardBusiness: {
-                    releases: req.body.releases,
-                    sustainings: req.body.sustainings,
-                    other: req.body.other
+                    releases: releases,
+                    sustainings: sustainings,
+                    other: other
                 },
-                program: {
-                    firstSpeaker: req.body.firstSpeaker,
-                    secondSpeaker: req.body.secondSpeaker,
-                    finalSpeaker: req.body.finalSpeaker
-                },
-                closingPrayer: req.body.closingPrayer
+                program: program,
+                closingPrayer: closingPrayer
             };
             const response = await db.getDb().db().collection('sacrament').replaceOne({ date: date }, doc);
             if (response.acknowledged) {

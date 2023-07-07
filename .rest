@@ -105,7 +105,6 @@ Content-Type: application/json
     "openingPrayer": "",
     "openingHymn": "280 Welcome Welcome Sabbath Morning",
     "sacramentHymn": "185 Reverently and Meekly Now",
-    "intermediateHymn": "Ward Choir",
     "closingHymn": "260 Who's on the Lords side?",
     "releases": [
         "Sister Tebogo Makhaye as the Relief Society Secretary"
@@ -114,9 +113,12 @@ Content-Type: application/json
         "Siter Leanne Turner as Relief Society Secretary",
         "Sister Yolanda Classen as Assistant Relief Society Secretary"
     ],
-    "other": "",
-    "firstSpeaker": "Bishop Vorster",
-    "secondSpeaker": "Sister Philadelphia Mogapi",
-    "finalSpeaker": "Stake Speaker",
+    "other": [],
+    "program": [
+        "First Speaker: Bishop Vorster",
+        "Second Speaker: Sister Philadelphia Mogapi",
+        "Intermediate Hymn: Ward Choir",
+        "Final Speaker: Stake Speaker"
+    ],
     "closingPrayer": ""
 }
