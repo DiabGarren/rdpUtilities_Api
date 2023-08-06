@@ -78,7 +78,7 @@ const createUser = async (req, res) => {
             if (response.acknowledged && user.password != null) {
                 res.status(201).json(response);
             } else {
-                res.status(500).json({ error: 'An error occured while creating the user.' });
+                res.status(500).json({ error: 'Error creating user' });
             }
         }
 
@@ -108,7 +108,7 @@ const updateUser = async (req, res) => {
         if (response.acknowledged && user.password != null) {
             res.status(204).json(response);
         } else {
-            res.status(500).json({ error: 'An error occured while updating the user.' });
+            res.status(500).json({ error: 'Error updating user' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error updating user, Err: ${err}` });
@@ -125,7 +125,7 @@ const deleteUser = async (req, res) => {
         if (response.acknowledged) {
             res.status(204).json(response);
         } else {
-            res.status(500).json({ error: 'An error occured while deleting the user.' });
+            res.status(500).json({ error: 'Error deleting user' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error deleting user, Err: ${err}` });

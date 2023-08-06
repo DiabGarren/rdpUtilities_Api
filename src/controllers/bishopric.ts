@@ -46,7 +46,7 @@ const createDoc = async (req, res) => {
         if (response.acknowledged) {
             res.status(200).json(response);
         } else {
-            res.status(500).json({ error: 'An error occured while creating the doc.' });
+            res.status(500).json({ error: 'Error creating doc' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error creating the doc, Err: ${err}` });
@@ -100,7 +100,7 @@ const updateDoc = async (req, res) => {
             if (response.acknowledged) {
                 res.status(200).json(response);
             } else {
-                res.status(500).json({ error: 'An error occured while updating the doc.' });
+                res.status(500).json({ error: 'Error updating doc' });
             }
         } else {
             res.status(400).json({ error: `Cannot find doc with date: ${date}` });
@@ -117,7 +117,7 @@ const deleteDoc = async (req, res) => {
         if (response.acknowledged) {
             res.status(204).json(response);
         } else {
-            res.status(500).json({ error: 'An error occured while deleting the doc.' });
+            res.status(500).json({ error: 'Error deleting doc' });
         }
     } catch (err) {
         res.status(500).json({ error: `Error deleting doc, Err: ${err}` });
