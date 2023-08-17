@@ -40,7 +40,9 @@ const createDoc = async (req, res) => {
             training: req.body.training,
             agenda: req.body.agenda,
             closingPrayer: req.body.closingPrayer,
-            notes: req.body.notes
+            notes: req.body.notes,
+            createdBy: req.body.created,
+            updatedBy: 'n/a'
         };
         const response = await db.getDb().db().collection('wardCouncil').insertOne(doc);
         if (response.acknowledged) {
@@ -93,8 +95,9 @@ const updateDoc = async (req, res) => {
                 training: training, 
                 agenda: agenda, 
                 closingPrayer: closingPrayer, 
-                notes: notes
-    
+                notes: notes,
+                createdBy: existingDoc[0].createdBy,
+                updatedBy: req.body.updatedBy    
             };
             const response = await db.getDb().db().collection('wardCouncil').replaceOne({ date: date }, doc);
             if (response.acknowledged) {

@@ -49,7 +49,9 @@ const createDoc = async (req, res) => {
                 other: req.body.other
             },
             program: req.body.program,
-            closingPrayer: req.body.closingPrayer
+            closingPrayer: req.body.closingPrayer,
+            createdBy: req.body.created,
+            updatedBy: 'n/a'
         };
         const response = await db.getDb().db().collection('sacrament').insertOne(doc);
         if (response.acknowledged) {
@@ -142,7 +144,9 @@ const updateDoc = async (req, res) => {
                     other: other
                 },
                 program: program,
-                closingPrayer: closingPrayer
+                closingPrayer: closingPrayer,
+                createdBy: existingDoc[0].createdBy,
+                updatedBy: req.body.updatedBy
             };
             const response = await db.getDb().db().collection('sacrament').replaceOne({ date: date }, doc);
             if (response.acknowledged) {
