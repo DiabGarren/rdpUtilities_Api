@@ -47,8 +47,11 @@ const createAssignment = async (req, res) => {
         }
         const assignment = {
             userId: id,
-            assignment: req.body.assignment,
-            completed: req.body.completed
+            assignments: [
+                {
+                    assignment: req.body.assignment,
+                    completed: req.body.completed
+                }]
         };
         const result = await db.getDb().db().collection('assignments').insertOne(assignment);
         if (result.acknowledged) {
@@ -68,9 +71,12 @@ const updateAssignment = async (req, res) => {
             res.status(400).json({ error: 'A valid user id is required' });
         }
         const assignment = {
-            userId: req.body.userId,
-            assignment: req.body.assignment,
-            completed: req.body.completed
+            userId: id,
+            assignments: [
+                {
+                    assignment: req.body.assignment,
+                    completed: req.body.completed
+                }]
         };
         const result = await db.getDb().db().collection('assignments').replaceOne({ _id: new objectId(id) }, assignment);
         if (result.acknowledged) {
@@ -83,11 +89,11 @@ const updateAssignment = async (req, res) => {
     }
 };
 
-const deleteAssignment =async (req, res) => {
+const deleteAssignment = async (req, res) => {
     try {
         const id = req.params.id;
         console.log(id);
-        
+
         if (!objectId.isValid(id)) {
             res.status(400).json({ error: 'A valid user id is required' });
         }
