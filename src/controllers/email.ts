@@ -16,7 +16,7 @@ export default function newMail(req, res) {
         to: req.body.email,
         subject: 'Password reset for rdpUtilites',
         // text: `This is a reset password request for ${req.body.user}. Please click on the link below to reset your password. https://www.diabgarren.github.io/rdpUtilites/reset/?id=${req.params.id}`
-        html: `<h1>This is a reset password request for rdpUtilities requested by: ${req.body.email}.</h1><p>Please click on the link below to reset your password.</p><a href="http://localhost:5504/rdpUtilites/reset/?id=${req.params.id}" style="
+        html: `<h1>This is a password reset request for rdpUtilities, requested by: ${req.body.user}.</h1><h2>Please click on the link below to reset your password.</h2><a href="http://127.0.0.1:5504/rdpUtilities/reset/?id=${req.body.id}" style="
         display: block;
         width: 350px;
         margin: 0 auto;
@@ -34,9 +34,10 @@ export default function newMail(req, res) {
     transport.sendMail(mailOptions, (err, info) => {
         if (err) {
             console.log(err);
+            res.status(500).json({ error: 'Error occured sending email' });
         } else {
             console.log(`Email sent: ${info.response}`);
-
+            res.status(201).json(info.response);
         }
     });
 }

@@ -153,9 +153,11 @@ Content-Type: application/json
 DELETE http://localhost:1830/assignments/64cfa9fbc5835e158947431d HTTP/1.1
 
 ###
-POST http://localhost:1830/reset/64938570b07e5b420bd39be0 HTTP/1.1
+POST http://localhost:1830/reset HTTP/1.1
 Content-Type:  application/json
 
 {
+    "id": "64938570b07e5b420bd39be0",
+    "user": "Garren Diab",
     "email": "garrendiab@gmail.com"
 }

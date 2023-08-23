@@ -3,6 +3,6 @@ import email from '../controllers/email';
 
 const router = express.Router();
 
-router.post('/:id', email);
+router.post('/', email);
 
 export = router;
