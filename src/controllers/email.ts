@@ -14,9 +14,9 @@ export default function newMail(req, res) {
     const mailOptions = {
         from: process.env.GMAIL,
         to: req.body.email,
-        subject: `Password reset for ${req.body.user}`,
+        subject: 'Password reset for rdpUtilites',
         // text: `This is a reset password request for ${req.body.user}. Please click on the link below to reset your password. https://www.diabgarren.github.io/rdpUtilites/reset/?id=${req.params.id}`
-        html: `<h1>This is a reset password request for ${req.body.user}.</h1><p>Please click on the link below to reset your password.</p><a href="http://localhost:5504/rdpUtilites/reset/?id=${req.params.id}" style="
+        html: `<h1>This is a reset password request for rdpUtilities requested by: ${req.body.email}.</h1><p>Please click on the link below to reset your password.</p><a href="http://localhost:5504/rdpUtilites/reset/?id=${req.params.id}" style="
         display: block;
         width: 350px;
         margin: 0 auto;
