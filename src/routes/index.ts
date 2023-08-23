@@ -4,6 +4,7 @@ import wardCouncil from './wardCouncil';
 import bishopric from './bishopric';
 import sacrament from './sacrament';
 import assignments from './assignments';
+import email from './email';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/wardCouncil', wardCouncil);
 router.use('/bishopric', bishopric);
 router.use('/sacrament', sacrament);
 router.use('/assignments', assignments);
+router.use('/reset', email);
 
 export = router;
