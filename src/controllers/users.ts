@@ -51,6 +51,26 @@ const getUser = async (req, res) => {
     }
 };
 
+const getUserByEmail = async (req, res) => {
+    try {
+        const result = await db.getDb().db().collection('users').find({ email: req.params.email });
+        result.toArray()
+            .then((list) => {
+                if (list.length == 0) {
+                    res.status(400).json({ error: `Cannot find user with id: ${id}` });
+                } else {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.status(200).json(list[0]);
+                }
+            })
+            .catch((err) => {
+                res.status(500).json({ error: `Error finding user with id: ${id}, Err: ${err}` });
+            });
+    } catch (err) {
+        res.status(500).json({ error: `Error getting the user, Err: ${err}` });
+    }
+};
+
 const createUser = async (req, res) => {
     try {
         const firstName = req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.substr(1).toLowerCase();
@@ -168,6 +188,7 @@ const login = async (req, res) => {
 
 export = {
     getUsers,
+    getUserByEmail,
     getUser,
     createUser,
     updateUser,
