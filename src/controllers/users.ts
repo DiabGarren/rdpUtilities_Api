@@ -57,14 +57,14 @@ const getUserByEmail = async (req, res) => {
         result.toArray()
             .then((list) => {
                 if (list.length == 0) {
-                    res.status(400).json({ error: `Cannot find user with id: ${id}` });
+                    res.status(400).json({ error: `Cannot find user with email: ${req.body.email}` });
                 } else {
                     res.setHeader('Content-Type', 'application/json');
                     res.status(200).json(list[0]);
                 }
             })
             .catch((err) => {
-                res.status(500).json({ error: `Error finding user with id: ${id}, Err: ${err}` });
+                res.status(500).json({ error: `Error finding user with email: ${req.body.email}, Err: ${err}` });
             });
     } catch (err) {
         res.status(500).json({ error: `Error getting the user, Err: ${err}` });

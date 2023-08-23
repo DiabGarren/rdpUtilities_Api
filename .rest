@@ -161,3 +161,6 @@ Content-Type:  application/json
     "user": "Garren Diab",
     "email": "garrendiab@gmail.com"
 }
+
+###
+GET http://localhost:1830/users/email/garrendiab@gmail.com HTTP/1.1
