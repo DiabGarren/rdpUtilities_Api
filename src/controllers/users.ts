@@ -1,7 +1,8 @@
 import db from '../db';
 import bcrypt from 'bcrypt';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const objectId = require('mongodb').ObjectId;
+const objectId = require('mongodb').ObjectId; 
+import nodemailer from 'nodemailer';
 
 
 const hashPassword = async (password: string) => {
@@ -95,7 +96,33 @@ const createUser = async (req, res) => {
 
         if (!existing) {
             const response = await db.getDb().db().collection('users').insertOne(user);
+
             if (response.acknowledged && user.password != null) {
+                const transport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: process.env.GMAIL,
+                        pass: process.env.GMAIL_PASS
+                    }
+                });
+
+                const mailOptions = {
+                    from: process.env.GMAIL,
+                    to: process.env.GMAIL,
+                    subject: 'New rdpUtilites user',
+                    html: `<h2>${user.firstName} ${user.lastName} has just created an account.</h2>`
+                };
+
+                transport.sendMail(mailOptions, (err, info) => {
+                    if (err) {
+                        console.log(err);
+                        // res.status(500).json({ error: 'Error occured sending email' });
+                    } else {
+                        console.log(`Email sent: ${info.response}`);
+                        // res.status(201).json(info.response);
+                    }
+                });
+
                 res.status(201).json(response);
             } else {
                 res.status(500).json({ error: 'Error creating user' });
