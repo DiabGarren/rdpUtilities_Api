@@ -11,12 +11,13 @@ export default function newMail(req, res) {
         }
     });
 
+    const url = `https://diabgarren.github.io/rdpUtilities/reset/?id=${req.body.id}`;
+    // const url = `http://127.0.0.1:5504/rdpUtilities/reset/?id=${req.body.id}`;
     const mailOptions = {
         from: process.env.GMAIL,
         to: req.body.email,
         subject: 'Password reset for rdpUtilites',
-        // text: `This is a reset password request for ${req.body.user}. Please click on the link below to reset your password. https://www.diabgarren.github.io/rdpUtilites/reset/?id=${req.params.id}`
-        html: `<h1>This is a password reset request for rdpUtilities, requested by: ${req.body.user}.</h1><h2>Please click on the link below to reset your password.</h2><a href="https://diabgarren.github.io/rdpUtilities/reset/?id=${req.body.id}" style="
+        html: `<h1>This is a password reset request for rdpUtilities, requested by: ${req.body.user}.</h1><h2>Please click on the link below to reset your password.</h2><a href="${url}" style="
         display: block;
         width: 350px;
         margin: 0 auto;
