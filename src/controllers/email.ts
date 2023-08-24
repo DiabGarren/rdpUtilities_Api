@@ -40,7 +40,7 @@ export default function newMail(req, res) {
             // res.status(201).json(info.response);
             mailOptions = {
                 from: process.env.GMAIL,
-                to: req.body.email,
+                to: process.env.GMAIL,
                 subject: 'A user has requested to reset their rdpUtilites password',
                 html: `<h1>This is a password reset request for rdpUtilities, requested by: ${req.body.user}.</h1>`
             };
