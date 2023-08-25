@@ -41,8 +41,8 @@ const createDoc = async (req, res) => {
             agenda: req.body.agenda,
             closingPrayer: req.body.closingPrayer,
             notes: req.body.notes,
-            createdBy: req.body.created,
-            updatedBy: 'n/a'
+            createdBy: req.body.createdBy,
+            updatedBy: req.body.updatedBy
         };
         const response = await db.getDb().db().collection('wardCouncil').insertOne(doc);
         if (response.acknowledged) {

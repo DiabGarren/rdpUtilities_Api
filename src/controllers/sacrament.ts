@@ -50,8 +50,8 @@ const createDoc = async (req, res) => {
             },
             program: req.body.program,
             closingPrayer: req.body.closingPrayer,
-            createdBy: req.body.created,
-            updatedBy: 'n/a'
+            createdBy: req.body.createdBy,
+            updatedBy: req.body.updatedBy
         };
         const response = await db.getDb().db().collection('sacrament').insertOne(doc);
         if (response.acknowledged) {
