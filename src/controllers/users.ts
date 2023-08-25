@@ -88,8 +88,15 @@ const createUser = async (req, res) => {
         let existing = false;
         const users = await result.toArray();
         users.forEach(exUser => {
-            if (exUser.username == user.username || exUser.email == user.email) {
-                res.status(400).json({ error: 'This username or email is already in use.' });
+            if (exUser.username == user.username && exUser.email == user.email) {
+                res.status(400).json({ error: 'This username and email is already in use.' });
+                existing = true;
+            }
+            if (exUser.username == user.username){
+                res.status(400).json({ error: 'This username is already in use.' });
+                existing = true;
+            } else if (exUser.email == user.email) {
+                res.status(400).json({ error: 'This email is already in use.' });
                 existing = true;
             }
         });
