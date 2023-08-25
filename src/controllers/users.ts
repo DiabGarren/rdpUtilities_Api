@@ -108,9 +108,9 @@ const createUser = async (req, res) => {
 
                 const mailOptions = {
                     from: process.env.GMAIL,
-                    to: req.body.email.toLowerCase(),
+                    to: user.email,
                     subject: 'Welcome to rdpUtilties',
-                    html: `<h2>Dear ${user.firstName} ${user.lastName}</h2><p>Thank you for creating a rdpUtilties account.<br>Contact <a href="mailto:garrendiab@gmail.com">Garren Diab</a> if you have any queries or concerns.</p>`
+                    html: `<h2>Dear ${user.firstName} ${user.lastName}</h2><p>Thank you for creating a rdpUtilties account.<br>Contact <a href="mailto:garrendiab@gmail.com">@Garren Diab</a> if you have any queries or concerns.</p>`
                 };
 
                 transport.sendMail(mailOptions, (err, info) => {
