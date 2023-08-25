@@ -108,18 +108,40 @@ const createUser = async (req, res) => {
 
                 const mailOptions = {
                     from: process.env.GMAIL,
-                    to: process.env.GMAIL,
-                    subject: 'New rdpUtilites user',
-                    html: `<h2>${user.firstName} ${user.lastName} has just created an account.</h2>`
+                    to: req.body.email.toLowerCase(),
+                    subject: 'Welcome to rdpUtilties',
+                    html: `<h2>Dear ${user.firstName} ${user.lastName}</h2><p>Thank you for creating a rdpUtilties account.<br>Contact <a href="mailto:garrendiab@gmail.com">Garren Diab</a> if you have any queries or concerns.</p>`
                 };
 
                 transport.sendMail(mailOptions, (err, info) => {
                     if (err) {
                         console.log(err);
-                        // res.status(500).json({ error: 'Error occured sending email' });
                     } else {
                         console.log(`Email sent: ${info.response}`);
-                        // res.status(201).json(info.response);
+                        const transport = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: process.env.GMAIL,
+                                pass: process.env.GMAIL_PASS
+                            }
+                        });
+        
+                        const mailOptions = {
+                            from: process.env.GMAIL,
+                            to: process.env.GMAIL,
+                            subject: 'New rdpUtilites user',
+                            html: `<h2>${user.firstName} ${user.lastName} has just created an account.</h2>`
+                        };
+        
+                        transport.sendMail(mailOptions, (err, info) => {
+                            if (err) {
+                                console.log(err);
+                                // res.status(500).json({ error: 'Error occured sending email' });
+                            } else {
+                                console.log(`Email sent: ${info.response}`);
+                                // res.status(201).json(info.response);
+                            }
+                        });
                     }
                 });
 
