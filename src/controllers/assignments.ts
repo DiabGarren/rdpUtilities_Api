@@ -48,7 +48,8 @@ const createAssignment = async (req, res) => {
         const assignment = {
             userId: req.body.userId,
             assignment: req.body.assignment,
-            completed: req.body.completed
+            completed: req.body.completed,
+            dueDate: req.body.dueDate
         };
         const result = await db.getDb().db().collection('assignments').insertOne(assignment);
         if (result.acknowledged) {
@@ -70,7 +71,8 @@ const updateAssignment = async (req, res) => {
         const assignment = {
             userId: req.body.userId,
             assignment: req.body.assignment,
-            completed: req.body.completed
+            completed: req.body.completed,
+            dueDate: req.body.dueDate
         };
         const result = await db.getDb().db().collection('assignments').replaceOne({ _id: new objectId(id) }, assignment);
         if (result.acknowledged) {
