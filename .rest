@@ -30,6 +30,18 @@ Content-Type: application/json
 }
 
 ###
+PUT http://localhost:1830/users/64938570b07e5b420bd39be0 HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "Garren",
+    "lastName": "Diab",
+    "username": "diabgm",
+    "email": "garrendiab@gmail.com",
+    "level": "4"
+}
+
+###
 POST http://localhost:1830/users/login HTTP/1.1
 Content-Type: application/json
 

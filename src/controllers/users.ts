@@ -170,22 +170,53 @@ const updateUser = async (req, res) => {
         }
         const id = new objectId(req.params.id);
 
-        const firstName = req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.substr(1).toLowerCase();
-        const lastName = req.body.lastName.charAt(0).toUpperCase() + req.body.lastName.substr(1).toLowerCase();
-        const user = {
-            firstName: firstName,
-            lastName: lastName,
-            username: req.body.username.toLowerCase(),
-            email: req.body.email.toLowerCase(),
-            password: await hashPassword(req.body.password),
-            level: req.body.level
-        };
-        const response = await db.getDb().db().collection('users').replaceOne({ _id: id }, user);
-        if (response.acknowledged && user.password != null) {
-            res.status(204).json(response);
-        } else {
-            res.status(500).json({ error: 'Error updating user' });
+        const result = await db.getDb().db().collection('users').find({ _id: id});
+        const current = await result.toArray();
+
+        if (current.length > 0) {
+            let firstName = req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.substr(1).toLowerCase();
+            if (!firstName) {
+                firstName = current[0].firstName;
+            }
+            let lastName = req.body.lastName.charAt(0).toUpperCase() + req.body.lastName.substr(1).toLowerCase();
+            if (!lastName) {
+                lastName = current[0].lastName;
+            }
+            let username = req.body.username.toLowerCase();
+            if (!username) {
+                username = current[0].username;
+            }
+            let email = req.body.email.toLowerCase();
+            if (!email) {
+                email = current[0].email;
+            }
+            let password = req.body.password;
+            if (!password) {
+                password = current[0].password;
+            } else {
+                password = await hashPassword(req.body.password);
+            }
+            let level = req.body.level;
+            if (!level) {
+                level = current[0].level;
+            }
+
+            const user = {
+                firstName: firstName,
+                lastName: lastName,
+                username: username,
+                email: email,
+                password: password,
+                level: level
+            };
+            const response = await db.getDb().db().collection('users').replaceOne({ _id: id }, user);
+            if (response.acknowledged && user.password != null) {
+                res.status(204).json(response);
+            } else {
+                res.status(500).json({ error: 'Error updating user' });
+            }
         }
+
     } catch (err) {
         res.status(500).json({ error: `Error updating user, Err: ${err}` });
     }
