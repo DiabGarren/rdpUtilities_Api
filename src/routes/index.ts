@@ -5,6 +5,7 @@ import bishopric from './bishopric';
 import sacrament from './sacrament';
 import assignments from './assignments';
 import email from './email';
+import youth from './youth';
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use('/bishopric', bishopric);
 router.use('/sacrament', sacrament);
 router.use('/assignments', assignments);
 router.use('/reset', email);
+router.use('/youth', youth);
 
 export = router;
