@@ -37,11 +37,11 @@ const getActivity = async (req, res) => {
 const createActivity = async (req, res) => {
     try {
         const activity = {
-            date: req.body.day,
+            date: req.body.date,
             combined: req.body.combined,
             activity: req.body.activity
         };
-        const result = await db.getDb().db().collection('youth').insertOnce(activity);
+        const result = await db.getDb().db().collection('youth').insertOne(activity);
         if (result.acknowledged) {
             res.status(200).json(result);
         } else {
